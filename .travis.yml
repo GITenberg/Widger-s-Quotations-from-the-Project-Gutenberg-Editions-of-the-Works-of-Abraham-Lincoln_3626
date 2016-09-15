@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: Wzbu6U8amT2e3uQVb9BWfs+tGFYSvgMgGDe85VFTnoUjO+x0tAr9QinyVKYyzxqismWlBA7hgmsGEUiNyAEsEB4DkjzO8JzsF4aKIEvzvbSZQ5lx3LjUJqNr+6vkPzH7W2KqT7f4RO+EKsTsJEynOTimQtDyzWn215zoMd7iXnE7p6XsgEWz2AYZcRbMwEFIM0g9qWn42tC1W24PvOqB3iHd/gWmUSq8pt7Yey/kbNKxo+hYbDu+9JvXHTR+GnLbaQO/T2mZcnj2TTiIE91A0Oy+eqmlRzGRmuZjdvw9PfAyf+03ySQNw7+64W5LnAt559YY13JhhPHM65JlCHQxerl51db1paXL4mS/ybzdted/BjofYM2mVb2ew987vmZo3rWK42eULESmTqu51mninr8NsrAoV/GCd25EipQVsPewAfR52tyOxTY1LZxB9aYSyjudtvwyLnb0w8HWu3iAp01rSOA49HGCaUfXjsq1RYPW8EOu222cWVbf8rq3sDzUki3ahxhp48YXgt6x/0bc8sv8Cm54F80awZUcbuJ7Ff9XOXnoI3SWfXbl1wHAg+GUb5W+9vHfxws1UJ92GxePnBxsQiwjDZvURGPraSjV5agoiVrFGAwa7CSiIr/s96ozqgFRps3o9ESPVnkOpy7MnFSzd5H+H1MVOpQsbuasXmU=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/Widger-s-Quotations-from-the-Project-Gutenberg-Editions-of-the-Works-of-Abraham-Lincoln_3626
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy
