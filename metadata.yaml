@@ -1,5 +1,5 @@
 _repo: Widger-s-Quotations-from-the-Project-Gutenberg-Editions-of-the-Works-of-Abraham-Lincoln_3626
-_version: 0.2.0
+_version: 0.2.1
 contributor:
   creator:
     editor:
@@ -38,6 +38,7 @@ rights_url: http://creativecommons.org/about/pdm
 subjects:
 - !lcsh 'Quotations'
 - !lcc 'E456'
+- GITenberg
 title: Widger's Quotations from the Project Gutenberg Editions of the Works of Abraham
   Lincoln
 url: http://www.gutenberg.org/ebooks/3626
